@@ -14,9 +14,9 @@ app.use('/publico', express.static(__dirname + '/publico'));
 app.use(router);
 const server = https
     .createServer({
-        key: fs.readFileSync(process.env.PRIVKEY_, 'utf8'),
-        ca: fs.readFileSync(process.env.CHAIN_, 'utf8'),
-        cert: fs.readFileSync(process.env.CERT_, 'utf8'),
+        key: fs.readFileSync(fs.existsSync(process.env.PRIVKEY_)?process.env.PRIVKEY_:"./ssl/key.pem" , 'utf8'),
+        ca: fs.readFileSync(fs.existsSync(process.env.CHAIN_)?process.env.CHAIN_:"./ssl/key.pem", 'utf8'),
+        cert: fs.readFileSync(fs.existsSync(process.env.CERT_)?process.env.CERT_:"./ssl/cert.pem", 'utf8'),
     },
         app)
     .listen(app.get('port'), () => {
@@ -30,6 +30,20 @@ const io = SocketIO(server, {
     cors: {
         origin: '*',
     }
+});
+
+io.on("connection", (client) => {
+    client.emit('conexion_ok', "Conexion Realizada");
+    //console.log("new connectionnnnnn", client.id);
+    client.on('disconnect', function () {
+        clientes.splice(clientes.indexOf(client.id), 1);
+        console.log(clientes);
+    });
+
+    client.on("chat", (texto) => {
+        console.log(texto);
+    });
+
 });
 /**
 
