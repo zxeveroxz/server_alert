@@ -8,7 +8,7 @@ const app = express();
 //const leerArchivo = require("./audio_google");
 
 app.set('view engine', '.ejs');
-app.set('port', 8080);
+app.set('port', 1000);
 app.use('/publico', express.static(__dirname + '/publico'));
 app.use(router);
 const server = https
@@ -25,22 +25,12 @@ const server = https
 const SocketIO = require("socket.io");
 const io = SocketIO(server, {
     origins: ["*"],
-
-  handlePreflightRequest: (req, res) => {
-    res.writeHead(200, {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,POST",
-      "Access-Control-Allow-Headers": "my-custom-header",
-      "Access-Control-Allow-Credentials": true
-    });
-    res.end();
-  },
     maxHttpBufferSize: 1e8, // 100 MB  
     cors: {
         origin: '*',
     }
 });
-
+/**
 
 
 var clientes = [];
@@ -89,7 +79,7 @@ io.on("connection", (client) => {
         });        
     });
 });
-
+*/
 
 /**
 
