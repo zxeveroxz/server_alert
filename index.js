@@ -36,8 +36,8 @@ io.on("connection", (client) => {
     client.emit('conexion_ok', "Conexion Realizada");
     //console.log("new connectionnnnnn", client.id);
     client.on('disconnect', function () {
-        clientes.splice(clientes.indexOf(client.id), 1);
-        console.log(clientes);
+       
+        console.log("salio");
     });
 
     client.on("chat", (texto) => {
