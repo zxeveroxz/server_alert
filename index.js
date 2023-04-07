@@ -1,3 +1,4 @@
+require("dotenv").config();
 const https = require("https");
 const fs = require("fs");
 const path = require("path");
@@ -13,9 +14,9 @@ app.use('/publico', express.static(__dirname + '/publico'));
 app.use(router);
 const server = https
     .createServer({
-        key: fs.readFileSync("./ssl/key.pem", 'utf8'),
-        ca: fs.readFileSync("./ssl/csr.pem", 'utf8'),
-        cert: fs.readFileSync("./ssl/cert.pem", 'utf8'),
+        key: fs.readFileSync(process.env.PRIVKEY_, 'utf8'),
+        ca: fs.readFileSync(process.env.CHAIN_, 'utf8'),
+        cert: fs.readFileSync(process.env.CERT_, 'utf8'),
     },
         app)
     .listen(app.get('port'), () => {
