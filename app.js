@@ -54,7 +54,8 @@ io.on('connection', (socket) => {
 
 
     socket.on('was_qr',(datos) => {
-        socket.emit('was_qr', "was_qr desde el servidor")
+        socket.emit('was_qr', "was_qr desde el servidor");
+        console.log("on - was_qr desde el servidor");
     });
 
     // Evento personalizado para manejar la solicitud del cliente
