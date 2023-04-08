@@ -59,7 +59,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('estado',() => {
-        io.emit('estado_ws', {"evento":"estado","estado":datos} );        
+        io.emit('estado_ws', null );        
     });
 
     socket.on('estado_ws',(datos) => {
