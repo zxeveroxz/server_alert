@@ -53,6 +53,7 @@
 
     // Obtener el identificador del cliente almacenado en localStorage o generarlo si no existe
     let clientId = localStorage.getItem('clientId');
+    console.log(clientId);
     if (!clientId) {
       clientId = Math.random().toString(36).substring(2, 15);
       localStorage.setItem('clientId', clientId);
@@ -80,6 +81,13 @@
       // Mostrar mensaje al cliente informando que el servidor no está disponible
       const message = 'No se pudo conectar al servidor socket.io. Por favor, inténtalo más tarde.';
       alert(message); // Cambiar por la forma de mostrar mensajes en tu interfaz de usuario
+    });
+
+    // Escuchar evento 'hora_actual' en el cliente
+    socket.on('hora_actual', (data) => {
+      const horaActual = data.hora; // Obtener la hora actual recibida desde el servidor
+      console.log(`Hora actual: ${horaActual}`);
+      // Actualizar la interfaz de usuario con la hora actual recibida
     });
 
     // Evento 'clients_list' cuando se recibe la lista de clientes desde el servidor

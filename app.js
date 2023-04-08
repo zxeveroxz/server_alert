@@ -14,9 +14,9 @@ app.use(router);
 
 const server = https
     .createServer({
-        key: fs.readFileSync(fs.existsSync(process.env.PRIVKEY_)?process.env.PRIVKEY_:"./ssl/key.pem" , 'utf8'),
-        ca: fs.readFileSync(fs.existsSync(process.env.CHAIN_)?process.env.CHAIN_:"./ssl/key.pem", 'utf8'),
-        cert: fs.readFileSync(fs.existsSync(process.env.CERT_)?process.env.CERT_:"./ssl/cert.pem", 'utf8'),
+        key: fs.readFileSync(fs.existsSync(process.env.PRIVKEY_) ? process.env.PRIVKEY_ : "./ssl/key.pem", 'utf8'),
+        ca: fs.readFileSync(fs.existsSync(process.env.CHAIN_) ? process.env.CHAIN_ : "./ssl/key.pem", 'utf8'),
+        cert: fs.readFileSync(fs.existsSync(process.env.CERT_) ? process.env.CERT_ : "./ssl/cert.pem", 'utf8'),
     },
         app);
 const io = socketIO(server, {
@@ -74,9 +74,18 @@ io.on('connection', (socket) => {
             // Agregar lógica de manejo del error, como enviar una notificación o registrar en un servicio de seguimiento de errores
         }
     });
+
+
+    // Enviar la hora actual a todos los clientes cada 15 segundos
+    setInterval(() => {
+        const horaActual = new Date().toLocaleTimeString();
+        socket.emit('hora_actual', { hora: horaActual });
+    }, 15* 1000); // 15000 ms = 15 segundos
+
+
 });
 
 // Iniciar el servidor
 server.listen(app.get('port'), () => {
-    console.log(`Servidor Socket.io iniciado en el puerto `+ app.get('port'));
+    console.log(`Servidor Socket.io iniciado en el puerto ` + app.get('port'));
 });
