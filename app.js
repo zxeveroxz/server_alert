@@ -52,6 +52,11 @@ if (isProduction) {
 io.on('connection', (socket) => {
     console.log('Cliente conectado:', socket.id);
 
+    const {clientId,sala} = socket.handshake.query;
+
+    socket.join(sala);
+    const bienvenida = `Bienvenido: ${clientId} a la sala: ${sala}`;
+    io.to(sala).emit('bienvenida', bienvenida);
 
     socket.on('leer_qr',(datos) => {
         io.emit('leer_qr', {"evento":"leer_qr","qr":datos} );
