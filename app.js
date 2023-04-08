@@ -7,6 +7,8 @@ const socketIO = require('socket.io');
 const router = require("./router");
 const app = express();
 
+const CLIENTES_CONECTADOS = [];
+
 app.set('view engine', '.ejs');
 app.set('port', 1000);
 app.use('/publico', express.static(__dirname + '/publico'));
@@ -55,12 +57,18 @@ io.on('connection', (socket) => {
     const {clientId,sala} = socket.handshake.query;
 
     socket.join(sala);
+
+    CLIENTES_CONECTADOS.push({id: clientId,sala: sala});
+
     const bienvenida = `Bienvenido: ${clientId} a la sala: ${sala}`;
     io.to(sala).emit('bienvenida', bienvenida);
 
+
+
+
+
     socket.on('leer_qr',(datos) => {
         io.emit('leer_qr', {"evento":"leer_qr","qr":datos} );
-        //console.log("enviado desde el cliente "+datos);
     });
 
     socket.on('estado',() => {
@@ -86,11 +94,13 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Cliente desconectado:', socket.id);
         try {
-            // Lógica de manejo de desconexión del cliente
-            // ... (tu código aquí)
+           const clienteIndex = CLIENTES_CONECTADOS.findIndex((cliente)=>cliente.id === socket.id);
+
+           if(clienteIndex!==-1){
+            CLIENTES_CONECTADOS.splice(clienteIndex, 1);
+           }
         } catch (err) {
             console.error('Error en el manejo de la desconexión del cliente:', err);
-            // Agregar lógica de manejo del error, como enviar una notificación o registrar en un servicio de seguimiento de errores
         }
     });
 
@@ -101,6 +111,7 @@ io.on('connection', (socket) => {
         socket.emit('hora_actual', { hora: horaActual });
         console.log("Enviado hora actual del Servidor: "+ horaActual);
 
+        socket.emit('clientes_lista',CLIENTES_CONECTADOS);
         
     }, 30000); // 15000 ms = 15 segundos
 

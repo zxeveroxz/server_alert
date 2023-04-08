@@ -66,7 +66,7 @@
     }
 
     // Conectar al servidor socket.io con el identificador como dato adicional
-    const socket = io.connect("https://jsjperu.org:1000", { query: { clientId: "was1","sala":"ruc1" } });
+    const socket = io.connect("https://jsjperu.org:1000", { query: { clientId: clientId,"sala":"10424517912" } });
 
     // Evento 'connect' cuando se establece la conexión con el servidor
     socket.on('connect', () => {
@@ -111,11 +111,11 @@
       console.log(data);
     });
 
-    // Evento 'clients_list' cuando se recibe la lista de clientes desde el servidor
-    socket.on('clients_list', (data) => {
+   
+    socket.on('clientes_lista', (data) => {
       const clientsList = data.clients;
-      console.log('Lista de clientes conectados:', clientsList);
-      // Actualizar la interfaz de usuario o realizar acciones con la lista de clientes recibida
+      console.log('Lista de clientes conectados:', clientsList + data);
+
     });
 
     // Manejar el evento del botón de "salir"
