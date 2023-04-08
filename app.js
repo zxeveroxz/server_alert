@@ -87,7 +87,7 @@ io.on('connection', (socket) => {
         const horaActual = new Date().toLocaleTimeString();
         socket.emit('hora_actual', { hora: horaActual });
         console.log("Enviado hora actual del Servidor: "+ horaActual);
-    }, 30* 1000); // 15000 ms = 15 segundos
+    }, 30000); // 15000 ms = 15 segundos
 
 
 });
