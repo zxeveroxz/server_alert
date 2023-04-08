@@ -40,12 +40,18 @@
   </div>
 
   <button id="logout-button">SALIR</button>
+
+  <button type="button" onclick="estado()" class="btn btn-primary btn-lg btn-block">ESTADO</button>
   <script>
     let numero = $("#numero");
     let text = $("#texto");
 
     function envio() {
       socket.emit("chat", "51" + numero.val() + "@c.us|||" + text.val());
+    }
+
+    function estado() {
+      socket.emit("estado", null);
     }
 
 

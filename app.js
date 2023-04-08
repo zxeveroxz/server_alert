@@ -58,7 +58,11 @@ io.on('connection', (socket) => {
         //console.log("enviado desde el cliente "+datos);
     });
 
-    socket.on('estado',(datos) => {
+    socket.on('estado',() => {
+        io.emit('estado_ws', {"evento":"estado","estado":datos} );        
+    });
+
+    socket.on('estado_ws',(datos) => {
         io.emit('estado', {"evento":"estado","estado":datos} );        
     });
 
