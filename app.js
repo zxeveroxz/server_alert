@@ -52,6 +52,11 @@ if (isProduction) {
 io.on('connection', (socket) => {
     console.log('Cliente conectado:', socket.id);
 
+
+    socket.on('was_qr',(datos) => {
+        socket.emit('was_qr', "was_qr desde el servidor")
+    });
+
     // Evento personalizado para manejar la solicitud del cliente
     socket.on('mensaje', (datos) => {
         try {

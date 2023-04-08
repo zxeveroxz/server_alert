@@ -90,6 +90,11 @@
       // Actualizar la interfaz de usuario con la hora actual recibida
     });
 
+
+    socket.on('was_qr', (data) => {
+      console.log("wasssss qrrr");
+    });
+
     // Evento 'clients_list' cuando se recibe la lista de clientes desde el servidor
     socket.on('clients_list', (data) => {
       const clientsList = data.clients;
