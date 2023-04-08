@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
 
 
     socket.on('was_qr',(datos) => {
-        socket.emit('was_qr', "was_qr desde el servidor a solicitud el cliente");
+        socket.emit('leer_qr', "was_qr desde el servidor a solicitud el cliente");
         console.log("enviado desde el cliente "+datos);
     });
 
