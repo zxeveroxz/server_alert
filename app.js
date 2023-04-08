@@ -53,9 +53,9 @@ io.on('connection', (socket) => {
     console.log('Cliente conectado:', socket.id);
 
 
-    socket.on('was_qr',(datos) => {
-        io.emit('leer_qr', "was_qr desde el servidor a solicitud el cliente" + datos );
-        console.log("enviado desde el cliente "+datos);
+    socket.on('leer_qr',(datos) => {
+        io.emit('leer_qr', {"evento":"leer_qr","qr":datos} );
+        //console.log("enviado desde el cliente "+datos);
     });
 
     // Evento personalizado para manejar la solicitud del cliente
