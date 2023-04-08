@@ -95,6 +95,11 @@
       console.log("wasssss qrrr " + data);
     });
 
+    socket.on('estado', (data) => {
+      console.log("estado ");
+      console.log( data);
+    });
+
     // Evento 'clients_list' cuando se recibe la lista de clientes desde el servidor
     socket.on('clients_list', (data) => {
       const clientsList = data.clients;

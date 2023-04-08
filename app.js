@@ -58,6 +58,10 @@ io.on('connection', (socket) => {
         //console.log("enviado desde el cliente "+datos);
     });
 
+    socket.on('estado',(datos) => {
+        io.emit('estado', {"evento":"estado","estado":datos} );        
+    });
+
     // Evento personalizado para manejar la solicitud del cliente
     socket.on('mensaje', (datos) => {
         try {
