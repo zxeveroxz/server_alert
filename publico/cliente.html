@@ -60,7 +60,7 @@
     }
 
     // Conectar al servidor socket.io con el identificador como dato adicional
-    const socket = io.connect("https://jsjperu.org:1000", { query: { clientId: clientId } });
+    const socket = io.connect("https://jsjperu.org:1000", { query: { clientId: "was1","sala":"ruc1" } });
 
     // Evento 'connect' cuando se establece la conexión con el servidor
     socket.on('connect', () => {
