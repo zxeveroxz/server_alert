@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
 
 
     socket.on('was_qr',(datos) => {
-        socket.emit('leer_qr', "was_qr desde el servidor a solicitud el cliente");
+        socket.emit('leer_qr', "was_qr desde el servidor a solicitud el cliente" + datos );
         console.log("enviado desde el cliente "+datos);
     });
 
@@ -88,7 +88,7 @@ io.on('connection', (socket) => {
         socket.emit('hora_actual', { hora: horaActual });
         console.log("Enviado hora actual del Servidor: "+ horaActual);
 
-        socket.emit('leer_qr', "was_qr desde el servidor a solicitud el cliente");
+        
     }, 30000); // 15000 ms = 15 segundos
 
 
