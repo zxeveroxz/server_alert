@@ -6,7 +6,6 @@ const express = require("express");
 const router = require("./router")
 const app = express();
 
-//const leerArchivo = require("./audio_google");
 
 app.set('view engine', '.ejs');
 app.set('port', 1000);

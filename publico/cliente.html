@@ -6,49 +6,107 @@
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
   <title>Page Title</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
   <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const socket = io("jsjperu.org:1000");
-
-   
-  </script>
 
 </head>
 
 <body class="bg-light">
   <div class="container-fluid ">
-    <div class="card bg-light text-primary" >
-      <div class="card-header"><h2 class="card-title">CHAT</h2></div>
-      <div class="card-body">        
+    <div class="card bg-light text-primary">
+      <div class="card-header">
+        <h2 class="card-title">CHAT</h2>
+      </div>
+      <div class="card-body">
         <p class="card-text">Seleccione de la lista de Usuarios</p>
         <div class="form-group">
           <label for="">Ingrese un Numero telefonico</label>
-          <input type="text"
-            class="form-control" name="numero" id="numero" aria-describedby="helpId" placeholder="">
+          <input type="text" class="form-control" name="numero" id="numero" aria-describedby="helpId" placeholder="">
           <small id="helpId" class="form-text text-muted">Ejemplo: 51981359205@c.us</small>
         </div>
 
         <div class="form-group">
-          <label for="">Ingrese el mensaje</label>  
-          <input type="text"
-            class="form-control" name="texto" id="texto" >
+          <label for="">Ingrese el mensaje</label>
+          <input type="text" class="form-control" name="texto" id="texto">
           <small id="helpId" class="form-text text-muted">No ingrese titulos ni emoji</small>
         </div>
 
-        <button type="button"  onclick="envio()" class="btn btn-primary btn-lg btn-block">ENVIAR</button>
+        <button type="button" onclick="envio()" class="btn btn-primary btn-lg btn-block">ENVIAR</button>
       </div>
     </div>
   </div>
 
+  <button id="logout-button">SALIR</button>
   <script>
-     let numero = $("#numero");
+    let numero = $("#numero");
     let text = $("#texto");
 
-   function envio(){
-     socket.emit("chat","51"+numero.val()+"@c.us|||"+text.val());
-   }
+    function envio() {
+      socket.emit("chat", "51" + numero.val() + "@c.us|||" + text.val());
+    }
+
+
+    //const socket = io("jsjperu.org:1000");
+
+    // Obtener el identificador del cliente almacenado en localStorage o generarlo si no existe
+    let clientId = localStorage.getItem('clientId');
+    if (!clientId) {
+      clientId = Math.random().toString(36).substring(2, 15);
+      localStorage.setItem('clientId', clientId);
+    }
+
+    // Conectar al servidor socket.io con el identificador como dato adicional
+    const socket = io.connect("jsjperu.org:1000", { query: { clientId: clientId } });
+
+    // Evento 'connect' cuando se establece la conexión con el servidor
+    socket.on('connect', () => {
+      console.log('Conexión establecida con el servidor socket.io');
+    });
+
+    // Evento 'disconnect' cuando se pierde la conexión con el servidor
+    socket.on('disconnect', () => {
+      console.log('Conexión perdida con el servidor socket.io');
+      // Mostrar mensaje al cliente informando que el servidor no está disponible
+      const message = 'El servidor socket.io no está disponible en este momento. Por favor, inténtalo más tarde.';
+      alert(message); // Cambiar por la forma de mostrar mensajes en tu interfaz de usuario
+    });
+
+    // Evento 'connect_error' cuando ocurre un error en la conexión inicial con el servidor
+    socket.on('connect_error', (error) => {
+      console.log('Error en la conexión con el servidor socket.io:', error);
+      // Mostrar mensaje al cliente informando que el servidor no está disponible
+      const message = 'No se pudo conectar al servidor socket.io. Por favor, inténtalo más tarde.';
+      alert(message); // Cambiar por la forma de mostrar mensajes en tu interfaz de usuario
+    });
+
+    // Evento 'clients_list' cuando se recibe la lista de clientes desde el servidor
+    socket.on('clients_list', (data) => {
+      const clientsList = data.clients;
+      console.log('Lista de clientes conectados:', clientsList);
+      // Actualizar la interfaz de usuario o realizar acciones con la lista de clientes recibida
+    });
+
+    // Manejar el evento del botón de "salir"
+    const logoutButton = document.getElementById('logout-button'); // Cambiar 'logout-button' por el ID del botón en tu interfaz de usuario
+    logoutButton.addEventListener('click', () => {
+      // Eliminar el identificador del cliente del localStorage
+      localStorage.removeItem('clientId');
+
+      // Cerrar la conexión con el servidor socket.io
+      socket.disconnect();
+
+      // Realizar acciones adicionales para la salida del cliente
+      console.log('Cliente desconectado y el identificador ha sido eliminado del localStorage');
+    });
+
+
+
+
+  </script>
+
   </script>
 </body>
 
