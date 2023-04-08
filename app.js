@@ -54,8 +54,8 @@ io.on('connection', (socket) => {
 
 
     socket.on('was_qr',(datos) => {
-        socket.emit('was_qr', "was_qr desde el servidor");
-        console.log("on - was_qr desde el servidor");
+        socket.emit('was_qr', "was_qr desde el servidor a solicitud el cliente");
+        console.log("enviado desde el cliente "+datos);
     });
 
     // Evento personalizado para manejar la solicitud del cliente
@@ -87,7 +87,6 @@ io.on('connection', (socket) => {
         const horaActual = new Date().toLocaleTimeString();
         socket.emit('hora_actual', { hora: horaActual });
         console.log("Enviado hora actual del Servidor: "+ horaActual);
-        socket.emit('was_qr', "was_qr desde el servidor igual que la hora actual");
     }, 30* 1000); // 15000 ms = 15 segundos
 
 
