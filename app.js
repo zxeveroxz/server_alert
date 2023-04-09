@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
 
     
     socket.on('iniciar',() => {
-        io.emit('iniciar_ws', {"evento":"leer_qr","qr":datos} );
+        io.emit('iniciar_ws', null );
     });
 
 
