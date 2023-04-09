@@ -58,7 +58,7 @@ io.on('connection', (socket) => {
 
     socket.join(sala);
 
-    CLIENTES_CONECTADOS[clientId] = socket.id; //{id: clientId,sala: sala};
+    CLIENTES_CONECTADOS[clientId] = {"id": socket.id,"sala":sala}; //{id: clientId,sala: sala};
 
     const bienvenida = `Bienvenido: ${clientId} a la sala: ${sala}`;
     io.to(sala).emit('bienvenida', bienvenida);
@@ -97,7 +97,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Cliente desconectado:', socket.id);
         try {
-           const clientId = Object.keys(CLIENTES_CONECTADOS).find(key => CLIENTES_CONECTADOS[key]===socket.id);
+           const clientId = Object.keys(CLIENTES_CONECTADOS).find(key => CLIENTES_CONECTADOS[key].id===socket.id);
            if(clientId){
             delete CLIENTES_CONECTADOS[clientId];
            }
