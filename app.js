@@ -63,9 +63,9 @@ io.on('connection', (socket) => {
     const bienvenida = `Bienvenido: ${clientId} a la sala: ${sala}`;
     io.to(sala).emit('bienvenida', bienvenida);
 
-
-
-
+    console.log("================================================================");
+    console.log(socket);
+    console.log("================================================================");
     
     socket.on('iniciar',() => {
         io.emit('iniciar_ws', null );
