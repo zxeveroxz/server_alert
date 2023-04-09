@@ -112,8 +112,8 @@ io.on('connection', (socket) => {
         const horaActual = new Date().toLocaleTimeString();
         socket.emit('hora_actual', { hora: horaActual });
         console.log("Enviado hora actual del Servidor: "+ horaActual);
-
-        socket.emit('clientes_lista',CLIENTES_CONECTADOS);
+        
+        io.to(sala).emit('clientes_lista',CLIENTES_CONECTADOS);
         
     }, 30000); // 15000 ms = 15 segundos
 
