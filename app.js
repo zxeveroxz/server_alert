@@ -66,6 +66,11 @@ io.on('connection', (socket) => {
 
 
 
+    
+    socket.on('iniciar',() => {
+        io.emit('iniciar_ws', {"evento":"leer_qr","qr":datos} );
+    });
+
 
     socket.on('leer_qr',(datos) => {
         io.emit('leer_qr', {"evento":"leer_qr","qr":datos} );
