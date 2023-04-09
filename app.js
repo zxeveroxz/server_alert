@@ -7,7 +7,7 @@ const socketIO = require('socket.io');
 const router = require("./router");
 const app = express();
 
-const CLIENTES_CONECTADOS = [];
+const CLIENTES_CONECTADOS = {};
 
 app.set('view engine', '.ejs');
 app.set('port', 1000);
@@ -58,14 +58,12 @@ io.on('connection', (socket) => {
 
     socket.join(sala);
 
-    CLIENTES_CONECTADOS.push({id: clientId,sala: sala});
+    CLIENTES_CONECTADOS[clientId] = socket.id; //{id: clientId,sala: sala};
 
     const bienvenida = `Bienvenido: ${clientId} a la sala: ${sala}`;
     io.to(sala).emit('bienvenida', bienvenida);
 
-    console.log("================================================================");
-    console.log(socket);
-    console.log("================================================================");
+
     
     socket.on('iniciar',() => {
         io.emit('iniciar_ws', null );
@@ -99,10 +97,9 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Cliente desconectado:', socket.id);
         try {
-           const clienteIndex = CLIENTES_CONECTADOS.findIndex((cliente)=>cliente.id === socket.id);
-
-           if(clienteIndex!==-1){
-            CLIENTES_CONECTADOS.splice(clienteIndex, 1);
+           const clientId = Object.keys(CLIENTES_CONECTADOS).find(key => CLIENTES_CONECTADOS[key]===socket.id);
+           if(clientId){
+            delete CLIENTES_CONECTADOS[clientId];
            }
         } catch (err) {
             console.error('Error en el manejo de la desconexión del cliente:', err);
