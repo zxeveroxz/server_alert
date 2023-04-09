@@ -7,7 +7,7 @@ const socketIO = require('socket.io');
 const router = require("./router");
 const app = express();
 
-const CLIENTES_CONECTADOS = {};
+const CLIENTES_CONECTADOS = [];
 
 app.set('view engine', '.ejs');
 app.set('port', 1000);
@@ -112,8 +112,8 @@ io.on('connection', (socket) => {
         const horaActual = new Date().toLocaleTimeString();
         socket.emit('hora_actual', { hora: horaActual });
         console.log("Enviado hora actual del Servidor: "+ horaActual);
-        
-        io.to(sala).emit('clientes_lista', Object.keys(CLIENTES_CONECTADOS).find(key => CLIENTES_CONECTADOS[key].sala===sala));
+        let clientes_independientes = CLIENTES_CONECTADOS.filter(cliente =>cliente.sala==sala);
+        io.to(sala).emit('clientes_lista',clientes_independientes);
         
     }, 30000); // 15000 ms = 15 segundos
 
