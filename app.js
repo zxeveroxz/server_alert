@@ -113,7 +113,7 @@ io.on('connection', (socket) => {
         socket.emit('hora_actual', { hora: horaActual });
         console.log("Enviado hora actual del Servidor: "+ horaActual);
         
-        io.to(sala).emit('clientes_lista',CLIENTES_CONECTADOS);
+        io.to(sala).emit('clientes_lista', Object.keys(CLIENTES_CONECTADOS).find(key => CLIENTES_CONECTADOS[key].sala===sala));
         
     }, 30000); // 15000 ms = 15 segundos
 
