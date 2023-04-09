@@ -58,7 +58,7 @@ io.on('connection', (socket) => {
 
     socket.join(sala);
 
-    CLIENTES_CONECTADOS[clientId] = {"id": socket.id,"sala":sala}; //{id: clientId,sala: sala};
+    CLIENTES_CONECTADOS.push({"id": socket.id,"sala":sala}); //{id: clientId,sala: sala};
 
     const bienvenida = `Bienvenido: ${clientId} a la sala: ${sala}`;
     io.to(sala).emit('bienvenida', bienvenida);
@@ -112,7 +112,8 @@ io.on('connection', (socket) => {
         const horaActual = new Date().toLocaleTimeString();
         socket.emit('hora_actual', { hora: horaActual });
         console.log("Enviado hora actual del Servidor: "+ horaActual);
-        let clientes_independientes = CLIENTES_CONECTADOS.filter(cliente =>cliente.sala==sala);
+        let clientes_independientes = CLIENTES_CONECTADOS.filter(item =>item.sala==sala);
+        console.log(clientes_independientes);
         io.to(sala).emit('clientes_lista',clientes_independientes);
         
     }, 30000); // 15000 ms = 15 segundos
