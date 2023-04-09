@@ -58,7 +58,7 @@ io.on('connection', (socket) => {
 
     socket.join(sala);
 
-    CLIENTES_CONECTADOS.push({"id": socket.id,"sala":sala}); //{id: clientId,sala: sala};
+    CLIENTES_CONECTADOS.push({"id": socket.id,"clientId":clientId,"sala":sala}); //{id: clientId,sala: sala};
 
     const bienvenida = `Bienvenido: ${clientId} a la sala: ${sala}`;
     io.to(sala).emit('bienvenida', bienvenida);
