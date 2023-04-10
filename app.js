@@ -135,7 +135,7 @@ io.on('connection', (socket) => {
 });
 
 function buscar_was_server(CLIENTES_CONECTADOS,ruc){
-    let clientes = CLIENTES_CONECTADOS.filter(item =>item.sala==sala);
+    let clientes = CLIENTES_CONECTADOS.filter(item =>item.sala==ruc);
     let estado = clientes.filter(item => item.clientId=="WAS"+ruc);
     return estado;
 }
