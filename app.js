@@ -66,21 +66,34 @@ io.on('connection', (socket) => {
 
     
     socket.on('iniciar',() => {
-        io.emit('iniciar_ws', null );
+        io.to(sala).emit('iniciar_ws', null );
     });
 
 
     socket.on('leer_qr',(datos) => {
-        io.emit('leer_qr', {"evento":"leer_qr","qr":datos} );
+        io.to(sala).emit('leer_qr', {"evento":"leer_qr","qr":datos} );
     });
 
-    socket.on('estado',() => {
-        io.emit('estado_ws', null );        
+    
+
+
+    socket.on('estado',() => {//verificar si el estado del servidor was
+        io.to(sala).emit('estado_ws', null );        
     });
 
-    socket.on('estado_ws',(datos) => {
-        io.emit('estado', {"evento":"estado","estado":datos} );        
+    socket.on('estado_ws',(datos) => {//respuesta de verificar el estado del servidor was
+        io.to(sala).emit('estado', {"evento":"estado","estado":datos} );        
     });
+
+
+
+    socket.on('estado_was_server',() => {
+        let resp = buscar_was_server(CLIENTES_CONECTADOS,sala)
+        io.to(sala).emit('estado_was_server', resp );       
+        console.log("estado_was_server"); 
+    });
+
+
 
     // Evento personalizado para manejar la solicitud del cliente
     socket.on('mensaje', (datos) => {
@@ -120,6 +133,12 @@ io.on('connection', (socket) => {
 
 
 });
+
+function buscar_was_server(CLIENTES_CONECTADOS,ruc){
+    let clientes = CLIENTES_CONECTADOS.filter(item =>item.sala==sala);
+    let estado = clientes.filter(item => item.clientId=="WAS"+ruc);
+    return estado;
+}
 
 // Iniciar el servidor
 server.listen(app.get('port'), () => {
