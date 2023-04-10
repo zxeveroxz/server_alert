@@ -96,10 +96,11 @@ io.on('connection', (socket) => {
 
 
     // Evento personalizado para manejar la solicitud del cliente
-    socket.on('mensaje', (datos) => {
+    socket.on('mensaje'+sala, (datos) => {
         try {
-            // Lógica de manejo de la solicitud del cliente
-            // ... (tu código aquí)
+
+            io.to(sala).emit('mensaje_ws'+sala,datos);
+
         } catch (err) {
             console.error('Error en el manejo de la solicitud del cliente:', err);
             // Agregar lógica de manejo del error, como enviar una notificación o registrar en un servicio de seguimiento de errores
